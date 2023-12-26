@@ -1,0 +1,61 @@
+﻿@using BookStoreBlazorWasm.Services.Interfaces
+@using BookStoreView.Models.Dtos
+@inherits SubCategoryBase
+
+<CascadingBlazoredModal>
+        <Modal Title="Edit SubCategory">
+            <ModalBody>
+                <EditForm Model="@SubCategoryToEdit" OnValidSubmit="UpdateSubCategory" >
+                    <DataAnnotationsValidator /> 
+                    <div class="mb-3">
+                        <label for="SubCategoryName" class="form-label">SubCategory Name</label>
+                    <InputText id="SubCategoryName" class="form-control" @bind-Value="@SubCategoryToEdit.SubCategoryName" />
+                    <ValidationMessage For="@(() => SubCategoryToEdit.SubCategoryName)" />
+                    </div>
+                    <div class="mb-3">
+                    <RadzenLabel Text="Category" Component="DropDownVirtualization" Style="margin-bottom: 8px; vertical-align: middle;" />
+                    <RadzenDropDown AllowClear="true" @bind-Value=SubCategoryToEdit.CategoryId AllowVirtualization="true" Name="DropDownVirtualization"
+                                    Change="HandleCategoryChange"
+                                    AllowFiltering="true" Data=@categories TextProperty="CategoryName" ValueProperty="CategoryId" Style="width: 100%; max-width: 450px;" Placeholder="Choose Category ..." />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                        <button type="submit" class="btn btn-primary" >Confirm Changes</button>
+                      
+                    </div>
+                </EditForm>
+            </ModalBody>
+        </Modal>
+</CascadingBlazoredModal>
+
+@code{
+
+    [Inject] private ICategoryService CategoryService { get; set; }
+    private IEnumerable<CategoryDto> categories = new List<CategoryDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CategoryService == null)
+        {
+            throw new InvalidOperationException("CategoryService is not initialized.");
+        }
+        categories = await CategoryService.GetAllCategory();
+    }
+
+    private void HandleCategoryChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedCategoryId = (Guid)value;
+            var selectedCategory = categories.FirstOrDefault(c => c.CategoryId == selectedCategoryId);
+
+            if (selectedCategory != null)
+            {
+                SubCategoryToEdit.CategoryId = selectedCategoryId;
+                SubCategoryToEdit.CategoryName = selectedCategory.CategoryName;
+            }
+        }
+    }
+
+}

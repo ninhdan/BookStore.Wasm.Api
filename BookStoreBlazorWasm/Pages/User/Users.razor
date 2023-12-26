@@ -1,0 +1,105 @@
+﻿@page "/admin/user"
+@using BookStoreView.Models.Dtos.DtoUser
+@layout LayoutAdmin
+
+@inherits UsersBase
+
+
+<div class="mb-4">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/admin" Text="Admin" />
+                <RadzenBreadCrumbItem Path="/manage" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/admin/user" Text="User Acount" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+
+@if (_user == null && ErrorMessage == null)
+{
+    <Loading></Loading>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <RadzenDataGrid AllowColumnReorder="true"
+                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowColumnResize="true" FilterMode="FilterMode.Simple"
+                    PageSize="10" AllowPaging="true" AllowSorting="true" Data="@_user" TItem="UserDto" ColumnWidth="160px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+        <Columns>
+
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Firstname" Filterable="false" Title="First Name" Frozen="true" Width="100px" TextAlign="TextAlign.Left"
+                                  Reorderable="true" Resizable="true" />
+            <RadzenDataGridColumn TItem="UserDto" Property="Lastname" Filterable="false" Title="Last Name" Frozen="true" Width="100px" TextAlign="TextAlign.Left"
+                                  Reorderable="true" Resizable="true"  />
+            <RadzenDataGridColumn TItem="UserDto" Property="UserId" Title="ID" TextAlign="TextAlign.Left" Width="300px" Filterable=false />
+            <RadzenDataGridColumn TItem="UserDto" Property="Email" Title="Email" Sortable="false"
+                                  Filterable="true" Width="200px" TextAlign="TextAlign.Left" />
+
+
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Gender" Title="Gender" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @if (data.Gender == true)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Info">Male </RadzenBadge>
+                    }
+                    else if (data.Gender == false)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Danger">Female</RadzenBadge>
+                    }else
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Warning">Unknown</RadzenBadge>
+                    }
+
+                </Template>
+            </RadzenDataGridColumn>
+
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Birthday" Title="Birthday" TextAlign="TextAlign.Left" />
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Accountstatus" Title="Account Status" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @if (data.Accountstatus == true)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Success">Acive</RadzenBadge>
+                    }
+                    else if (data.Accountstatus == false)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Danger">InActive</RadzenBadge>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Role" Title="Role" TextAlign="TextAlign.Center" Filterable="false" >
+             <Template Context="data">
+                    @if (data.Role == "Admin")
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Primary">Admin</RadzenBadge>
+                    }
+                    else if (data.Role == "User")
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Danger">User</RadzenBadge>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Phone" Title="Phone" Width="150px" Filterable="true" />
+
+            <RadzenDataGridColumn TItem="UserDto" Property="Password" Title="Password" Width="300px" Filterable="false" />
+        </Columns>
+    </RadzenDataGrid>
+}
+
+
+
+

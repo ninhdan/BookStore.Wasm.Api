@@ -1,0 +1,85 @@
+﻿@page "/admin/category"
+@inherits CategoryBase
+@layout LayoutAdmin
+@using BookStoreBlazorWasm.Components
+@using BookStoreView.Models.Dtos;
+
+
+<div class="rz-m-0">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/admin" Text="Admin" />
+                <RadzenBreadCrumbItem Path="/manage" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/admin/category" Text="Category" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+
+
+@if (_categories == null && ErrorMessage == null)
+{
+    <Loading></Loading>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+
+    <div  class="d-flex justify-content-end m-lg-2" >
+        <RadzenButton Click=@ShowConfirmationAddModal Icon="add"  ButtonStyle="ButtonStyle.Success" class="m-lg-1 rz-border-radius-6" hidden="@IsAnyCategorySelected" />
+
+        @if(IsAnyCategorySelected)
+        {
+            <RadzenButton Click=@ShowEditModal  Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden="@(!IsSingleCategorySelected)" />
+            <RadzenButton Click=@DeleteSelected  Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" />
+        }
+        else
+        {
+            <RadzenButton Click=@ShowEditModal  Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden />
+            <RadzenButton Click=@DeleteSelected  Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" hidden />
+        }
+
+    </div>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@_categories" TItem="CategoryDto" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" class="rz-border-radius-3">
+       
+
+        <Columns>
+            <RadzenDataGridColumn TItem="CategoryDto" Title="Select All" Width="50px" TextAlign="TextAlign.Center" Filterable="false">
+                <HeaderTemplate>
+
+                    <RadzenCheckBox TValue="bool" @bind-Value="@selectAll" Change="@(args => SelectAll((bool)args))" />
+
+                </HeaderTemplate>
+                <Template Context="data">
+                    <RadzenCheckBox @bind-Value="data.IsSelected" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="CategoryDto" Property="CategoryId" Title="Category Id" Filterable="false" Width="200px" TextAlign="TextAlign.JustifyAll" />
+            <RadzenDataGridColumn TItem="CategoryDto" Property="CategoryName" Title="Category Name" Filterable="true" Sortable="true" Width="200px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="CategoryDto" Property="ProductPortfolio" Title="Product Portfolio" Sortable="false" Filterable="true" Width="200px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @if (data.ProductPortfolio == true)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Success">@bookVietNam</RadzenBadge>
+                    }
+                    else if (data.ProductPortfolio == false)
+                    {
+                        <RadzenBadge BadgeStyle="BadgeStyle.Danger">@bookForeign</RadzenBadge>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+
+
+    </RadzenDataGrid>
+}
+   

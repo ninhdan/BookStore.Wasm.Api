@@ -1,0 +1,251 @@
+﻿
+
+<style>
+    .book-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .right-align-link {
+        justify-content: flex-end;
+    }
+
+    .card-image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .fixed-height {
+        max-height: 3em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .fixe-height {
+        height: 1.5em;
+    }
+
+    .NavLink {
+        width: 80px;
+        height: 100px;
+        cursor: pointer;
+    }
+
+
+    .size-30-icon {
+        font-size: 20px;
+    }
+
+    .social-icons {
+        margin-right: 10px;
+    }
+
+
+    .custom-card {
+        margin: 5px;
+        min-height: 300px;
+    }
+
+    .custom-column {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+        .custom-column th {
+            font-size: 16px;
+        }
+
+    .custom-list {
+        list-style-type: none;
+        padding: 20px;
+    }
+
+        .custom-list li {
+            margin-bottom: 10px;
+        }
+
+        .custom-list a {
+            text-decoration: none;
+            color: #333;
+            font-weight: normal;
+        }
+
+            .custom-list a:hover {
+                color: #E60023;
+            }
+
+    .NavLink-hover:hover {
+        transform: scale(1.05);
+    }
+
+    .nav-link:hover {
+        text-decoration: underline;
+        color: #E60023;
+        cursor: pointer;
+    }
+</style>
+
+
+
+
+<RadzenCard>
+
+    <RadzenRow class="mt-3 ">
+        <RadzenColumn>
+            <RadzenCard class="shadow-none">
+                <RadzenColumn>
+                    <!-- Logo sách -->
+                    <RadzenImage Path="images/Logo/Logo-Remove.png" Style="width:60%; height: 150px;" class="mb-3" />
+
+                    <p style="font-size: 13px;">180 Cao Lỗ Phường 4 Quận 8 Tp.Hcm <br /> Cửa hàng Water7 BookStore </p>
+
+
+                    <p style="font-size: 13px;">Water7 nhận đặt hàng trực tuyến và giao hàng tận nơi. <br /> Cũng như bạn có thể đến địa chỉ trên để mua sắm cũng như trải nghiệm sản phẩm.</p>
+                    <br />
+
+                    <RadzenImage Path="https://file.hstatic.net/1000012850/file/20150827110756-dadangky-1-1_grande.png" Style="width:25%; height: 45px;" class="mb-3" />
+
+                    <br />
+
+
+                    <NavLink class="NavLink social-icons" href="https://facebook.com">
+                        <i class="fa-brands fa-facebook size-30-icon" style="color:#0866FF"></i>
+                    </NavLink>
+
+                    <NavLink class="NavLink social-icons" href="https://twitter.com">
+                        <i class="fa-brands fa-x-twitter size-30-icon" style="color:black"></i>
+                    </NavLink>
+
+                    <NavLink class="NavLink social-icons" href="https://www.youtube.com/" style="color:#FF0000">
+                        <i class="fa-brands fa-youtube size-30-icon"></i>
+                    </NavLink>
+
+                    <NavLink class="NavLink social-icons" href="https://www.tiktok.com/">
+                        <i class="fa-brands fa-tiktok size-30-icon" style="color:#000"></i>
+                    </NavLink>
+
+                    <NavLink class="NavLink social-icons" href="https://www.pinterest.com/">
+                        <i class="fa-brands fa-pinterest size-30-icon" style="color:#E60023"></i>
+                    </NavLink>
+
+                    <NavLink class="NavLink social-icons" href="https://www.instagram.com/" style="color:#A83797">
+                        <i class="fa-brands fa-instagram size-30-icon"></i>
+                    </NavLink>
+
+                    <br />
+
+                    <RadzenRow class="mt-2">
+                        <RadzenImage Path="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" Style="width:25%; height: 40px;" class="mb-3" />
+                        <RadzenImage Path="https://e7.pngegg.com/pngimages/316/826/png-clipart-etazhi-app-store-logo-brand-font-google-play-apple-store-text-logo.png" Style="width:25%; height: 40px;" class="mb-3" />
+
+                    </RadzenRow>
+
+                </RadzenColumn>
+            </RadzenCard>
+
+        </RadzenColumn>
+
+        <RadzenColumn class="custom-column ">
+            <RadzenCard class="custom-card mb-3">
+                <RadzenRow>
+                    <RadzenColumn>
+                        <!-- Nội dung của cột bên trái -->
+                        <th>DỊCH VỤ</th>
+                        <ul class="custom-list">
+                            <li><a href="#">Điều khoản sử dụng</a></li>
+                            <li><a href="#">Chính sách bảo mật thông tin cá nhân</a></li>
+                            <li><a href="#">Chính sách bảo mật thanh toán</a></li>
+                            <li><a href="#">Giới thiệu Water7 BookStore</a></li>
+                            <!-- ... thêm các mục khác -->
+                        </ul>
+                    </RadzenColumn>
+                    <RadzenColumn>
+                        <!-- Nội dung của cột bên phải -->
+                        <th>HỖ TRỢ</th>
+                        <ul class="custom-list">
+                            <li><a href="#">Chính sách đổi - trả - hoàn tiền</a></li>
+                            <li><a href="#">Chính sách bảo hành - bồi hoàn</a></li>
+                            <li><a href="#">Chính sách vận chuyển</a></li>
+                            <li><a href="#">Chính sách khách sỉ</a></li>
+                            <!-- ... thêm các mục khác -->
+                        </ul>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenCard>
+
+            <th class="mt-4">LIÊN HỆ</th>
+            <RadzenRow class="mt-3">
+
+                <RadzenColumn>
+                    <p class="font-size:12px"> <i class="fa-solid fa-location-pin"></i> 180 Cao Lỗ, Phường 4, Quận 8, Tp.HCM </p>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <p class="font-size:12px"><i class="fa-solid fa-phone"></i> 0123456789</p>
+                </RadzenColumn>
+                <RadzenColumn Style="margin-right:20px">
+                    <p class="font-size:12px;"><i class="fa-solid fa-envelope"></i>dh52007049@student.stu.edu.vn</p>
+                </RadzenColumn>
+
+
+            </RadzenRow>
+
+
+            <RadzenRow class="mt-4">
+
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/Logo-NCC/vnpost1.png" Style="width:100px;height 100px"></RadzenImage>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/Logo-NCC/icon_giao_hang_nhanh1.png" Style="width:100px;height 100px"></RadzenImage>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Viettel_Post_logo.svg/1200px-Viettel_Post_logo.svg.png" Style="width:100px;height 100px"></RadzenImage>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/Logo-NCC/icon_snappy1.png" Style="width:100px;height 100px"></RadzenImage>
+                </RadzenColumn>
+
+
+            </RadzenRow>
+
+
+            <RadzenRow class="mt-4">
+
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/vnpay_logo.png" Style="width:100px;height 100px" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/ZaloPay-logo-130x83.png" Style="width:100px;height 100px" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/momopay.png" Style="width:50px;height 50px" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/shopeepay_logo.png" Style="width:100px;height 100px" />
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenImage Path="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/PayPal_logo.svg/2560px-PayPal_logo.svg.png" Style="width:100px;height 100px" />
+                </RadzenColumn>
+
+
+            </RadzenRow>
+
+
+        </RadzenColumn>
+
+    </RadzenRow>
+
+
+    <p style="text-align:center; margin-top:20px">
+        &copy; 2023 Water7 Bookstore. All rights reserved. The author who built this website is Nguyễn Hòa Ninh Đan Est - 12/2023
+    </p>
+
+</RadzenCard>
+

@@ -1,0 +1,37 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+@using Blazored.Modal
+@using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+
+<style>
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+</style>
+
+<div class="container h-100 w-100">
+    <RadzenLayout style="position: relative">
+        <Header />
+        <RadzenBody>
+            <Banner />
+            <div class="container">
+                @Body
+            </div>
+        </RadzenBody>
+    </RadzenLayout>
+</div>
+
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="5"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorClass="error-toast-override"
+                ErrorIcon="fa fa-bug"
+                InfoClass="info-toast-override"
+                InfoIcon="fa fa-info-circle"
+                WarningClass="warning-toast-override"
+                WarningIcon="fa fa-exclamation-triangle" />

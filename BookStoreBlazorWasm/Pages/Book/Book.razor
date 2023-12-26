@@ -1,0 +1,104 @@
+﻿@page "/admin/book"
+@layout LayoutAdmin
+@inherits BookBase
+@using BookStoreView.Models.Dtos;
+
+
+
+<div class="rz-m-0">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/admin" Text="Admin" />
+                <RadzenBreadCrumbItem Path="/admin/manage" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/admin/manage/book" Text="Book" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+
+
+@if (_books == null && ErrorMessage == null )
+{
+    <Loading></Loading>
+}
+else if(ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+
+    <div class="d-flex justify-content-end m-lg-2">
+        <RadzenButton Click=@GotoCreateBook Icon="add" ButtonStyle="ButtonStyle.Success" class="m-lg-1 rz-border-radius-3" hidden="@IsAnyBookSelected" />
+
+         @if (IsAnyBookSelected)
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-3" hidden="@(!IsSingleBookSelected)" />
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-3" />
+        }
+        else
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-3" hidden />
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-3" hidden />
+        } 
+
+    </div>
+
+
+
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@_books" TItem="BookDto" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="BookDto" Title="Select All" Width="50px" TextAlign="TextAlign.Center" Filterable="false" Frozen="true">
+                    <HeaderTemplate>
+
+                        <RadzenCheckBox TValue="bool" @bind-Value="@selectAll" Change="@(args => SelectAll((bool)args))" />
+
+                    </HeaderTemplate>
+                    <Template Context="data">
+                        <RadzenCheckBox @bind-Value="data.IsSelected" />
+                    </Template>
+
+
+            </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="BookDto" Property="BookId" Filterable="false" Title="ID" Frozen="true" Width="300px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="BookDto" Title="Photo" Frozen="true" Sortable="false" Filterable="false" Width="100px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @if (!string.IsNullOrEmpty(data.PathImage))
+                    {
+                        <RadzenImage Path="@data.PathImage" class="rz-gravatar" AlternateText="copyFahasa" Style="width:50px; height:50px ; border-radius:0"/>
+                    }
+                    else
+                    {
+                        <span>No Photo Available</span>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="BookDto" Property="Title" Title="Title" Width="300px" />
+                <RadzenDataGridColumn TItem="BookDto" Property="Price" Title="Price" Filterable="false" Width="200px" />
+                <RadzenDataGridColumn TItem="BookDto" Property="SubcategoryName" Title="Subcategory" />
+                <RadzenDataGridColumn TItem="BookDto" Property="Author" Title="Author"  Width="250px"/>
+                <RadzenDataGridColumn TItem="BookDto" Property="Translator" Title="Translator " />
+                <RadzenDataGridColumn TItem="BookDto" Property="Publisher" Title="Publisher" />
+                <RadzenDataGridColumn TItem="BookDto" Property="PublisherYear" Title="Publisher Year" FormatString="{0:d}" />
+                <RadzenDataGridColumn TItem="BookDto" Property="SupplierName" Title="Supplier" />
+                <RadzenDataGridColumn TItem="BookDto" Property="LayoutName" Title="Layout" />
+                <RadzenDataGridColumn TItem="BookDto" Property="LanguageName" Title="Language" />
+                <RadzenDataGridColumn TItem="BookDto" Property="Size" Title="Size" Filterable="false" />
+                <RadzenDataGridColumn TItem="BookDto" Property="Weight" Title="Weight" Filterable="false" />
+                 <RadzenDataGridColumn TItem="BookDto" Property="QuanlityPage" Title="QuanlityPage" Filterable="false" />
+                <RadzenDataGridColumn TItem="BookDto" Property="PriceRangeName" Title="Price Range" Filterable="false" />
+                 <RadzenDataGridColumn TItem="BookDto" Property="Description" Title="Description" Filterable="false" />
+           
+        </Columns>
+    </RadzenDataGrid>
+
+
+
+}

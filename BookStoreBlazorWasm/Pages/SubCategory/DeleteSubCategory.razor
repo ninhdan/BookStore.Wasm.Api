@@ -1,0 +1,28 @@
+﻿
+@inherits SubCategoryBase
+@using BookStoreBlazorWasm.Components
+
+
+        <BlazoredModalContent>
+            
+            <div class="modal-body">
+                <p>Are you sure you want to delete the following categories?</p>
+                <ul>
+                    @foreach (var subcategoryName in SelectedSubCategoryNames)
+                    {
+                        <li>@subcategoryName</li>
+                    }
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                <button class="btn btn-danger" @onclick="Delete">Delete</button>
+            </div>
+        </BlazoredModalContent>
+
+
+ @code{
+    [Parameter] public List<string> SelectedSubCategoryNames { get; set; }
+}
+ 
+

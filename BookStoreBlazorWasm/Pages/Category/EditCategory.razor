@@ -1,0 +1,39 @@
+﻿@inherits CategoryBase
+
+<CascadingBlazoredModal>
+   
+        <Modal Title="Edit Category">
+            <ModalBody>
+                <EditForm Model="@CategoryToEdit" OnValidSubmit="UpdateCategory" >
+                    <DataAnnotationsValidator /> 
+                    <div class="mb-3">
+                        <label for="CategoryName" class="form-label">Category Name</label>
+                        <InputText id="CategoryName" class="form-control" @bind-Value="@CategoryToEdit.CategoryName" />
+                        <ValidationMessage For="@(() => CategoryToEdit.CategoryName)" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-check-label">Product Portfolio</label>
+                        <InputRadioGroup @bind-Value="@CategoryToEdit.ProductPortfolio">
+                            <div class="form-check">
+                                <InputRadio Value="true" class="form-check-input" />
+                                <label class="form-check-label">Sách tiếng việt</label>
+                            </div>
+                            <div class="form-check">
+                                <InputRadio Value="false" class="form-check-input" />
+                                <label class="form-check-label">Foreign books</label>
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                        <button type="submit" class="btn btn-primary" >Confirm Changes</button>
+                      
+                    </div>
+                </EditForm>
+            </ModalBody>
+        </Modal>
+    
+    
+
+</CascadingBlazoredModal>

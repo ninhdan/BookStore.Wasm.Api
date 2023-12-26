@@ -1,0 +1,151 @@
+﻿@page "/ShoppingCart"
+
+@inherits ShoppingCartBase
+
+@layout LayoutBookDetail
+
+
+
+<RadzenContentContainer>
+    <div class="rz-m-0 mb-2 d-flex align-items-lg-end justify-content-start">
+        <RadzenBreadCrumb>
+            <RadzenBreadCrumb>
+                <Template Context="item">
+                    <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+                </Template>
+                <ChildContent>
+                    <RadzenBreadCrumbItem Path="/" Text="Home" />
+                    <RadzenBreadCrumbItem Path="/" Text="Giỏ hàng" />
+                </ChildContent>
+            </RadzenBreadCrumb>
+        </RadzenBreadCrumb>
+    </div>
+
+
+    <RadzenCard class="mb-4 mt-3 w-100">
+
+        @if (shoppingCartItems == null && ErrorMessage == null)
+        {
+            <p>Loading ....</p>
+        }
+        else if (ErrorMessage != null)
+        {
+            <BookStoreBlazorWasm.Components.DisplayError ErrorMessage="@ErrorMessage"></BookStoreBlazorWasm.Components.DisplayError>
+        }
+        else
+        {
+
+            <RadzenCard class="shadow-none mb-2">
+                <RadzenRow>
+
+                    <RadzenColumn class="d-flex align-items-start justify-content-start">
+                        <div class="mt-2">
+                            <RadzenText TextStyle="TextStyle.DisplayH5"><strong>GIỎ HÀNG</strong></RadzenText>
+                            <NavLink href="/" class="btn btn-outline-danger" style=" display: flex; align-items: center; justify-content: center; border-radius:10px; ">
+                                <RadzenIcon Icon="arrow_back"></RadzenIcon><span> <strong>&nbsp;tiếp tục mua sắm</strong></span>
+                            </NavLink>
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn class="d-flex align-items-end justify-content-end">
+                        <div class="mt-2">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div class="mb-2"><RadzenText TextStyle="TextStyle.Subtitle1">Tổng Số Tiền</RadzenText> </div>
+                                <div class="mb-2" style="font-size: 18px; font-weight:200; font-weight:bolder">@Grandtotal</div>
+                            </div>
+                            <NavLink href="/checkout" class="btn btn-warning" style="width: 200px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <span class="oi oi-credit-card " style="font-size: 18px"></span><span style="font-size:18px ; font-weight:bolder">&nbsp; Thanh toán</span>
+                            </NavLink>
+                        </div>
+                    </RadzenColumn>
+
+                </RadzenRow>
+            </RadzenCard>
+
+
+
+
+
+            <RadzenCard>
+                <RadzenRow Width="100%">
+
+                    <RadzenColumn Size="7">
+
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Sản phẩm &nbsp<strong>(@TotalQuantily sản phẩm)</strong>  </RadzenText>
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="2" Style="text-align:center">
+
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Số lượng</RadzenText>
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="2" Style="text-align:center">
+
+                        <RadzenText TextStyle="TextStyle.Subtitle1">Thành tiền</RadzenText>
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="1">
+                    </RadzenColumn>
+
+
+                </RadzenRow>
+
+
+            </RadzenCard>
+
+            @if (shoppingCartItems.Count() > 0)
+            {
+                <RadzenCard class="mt-3">
+               
+                    <RadzenRow>
+                        @foreach (var item in shoppingCartItems)
+                        {
+                            <RadzenColumn Size="7">
+
+                                <RadzenRow class="d-flex align-items-center justify-content-center">
+                                    <RadzenColumn Size="3">
+                                        <RadzenImage Style="max-width: 150px; max-height: 150px; object-fit:cover" Path="@item.PathImage" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" class="pt-2">
+                                        <RadzenText>@item.Title</RadzenText>
+                                            <RadzenText class="pt-3"> <strong>@(item.Price.ToString("N2") + " đ")</strong></RadzenText>
+                                    </RadzenColumn>
+
+                                </RadzenRow>
+
+                            </RadzenColumn>
+                            <RadzenColumn Size="2" class="d-flex align-items-center justify-content-center">
+
+                                <input type="number" value="@item.Quanlity" min="1" Style="width:100px" @onchange="((ChangeEventArgs e) => UpdateQuanlityCartItem_Click(item.ItemId, Convert.ToInt32(e.Value)))" />
+
+                            </RadzenColumn>
+                            <RadzenColumn Size="2" class="d-flex align-items-center justify-content-center">
+
+                                <RadzenText>
+                                    <strong>@((item.Quanlity * item.Price).ToString("N2") + " đ")</strong>
+                                </RadzenText>
+
+                            </RadzenColumn>
+
+                            <RadzenColumn Size="1" class="d-flex align-items-center justify-content-center">
+
+                                <button @onclick="(() => DeleteCartItem_Click(item.ItemId))"
+                                        class="btn btn-danger sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+
+                            </RadzenColumn>
+
+                        } 
+                    </RadzenRow>
+                
+                </RadzenCard>
+             
+            }
+
+        }
+    </RadzenCard>
+
+
+    <Footer />
+</RadzenContentContainer>
+

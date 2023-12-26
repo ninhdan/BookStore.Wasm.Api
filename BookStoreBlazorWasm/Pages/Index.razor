@@ -1,0 +1,302 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@inherits SellingBooksBase
+@using BookStoreBlazorWasm.Pages.SellingBooks
+@using BookStoreView.Models.Dtos;
+@using Microsoft.AspNetCore.Authorization
+
+
+
+<PageTitle>Home</PageTitle>
+
+
+
+<RadzenContentContainer>
+
+    @{
+       
+        DateTime now = DateTime.Now;
+
+        DateTime lastMonth = now.AddMonths(-1);
+
+        string lastMonthString = lastMonth.ToString("MM/yyyy");
+
+        string print = $"Sách Bán Chạy - Tháng {lastMonthString}";
+    }
+
+    <RadzenHeading Size="H2" Text="@print" />
+
+    <RadzenCard class="mb-5">
+        <RadzenRow class="mt-3">
+            @if (_books != null)
+            {
+                @foreach (var bookRandom in _bestselling)
+                {
+                    <RadzenColumn Width="20%">
+                        <RadzenCard>
+                            <NavLink @onclick="(() => NavigateToDetailPage(bookRandom.BookId))" style="text-decoration: none; color: inherit; display: contents;">
+                                <div style="transition: transform 0.2s;" class="NavLink-hover">
+
+                                    <RadzenImage Path="@bookRandom.PathImage" Style="width: 195px; height: 200px;" class="mb-3" />
+                                    <RadzenHeading Size="H5" Text="@bookRandom.Title" Style="max-width:300px"  class="fixed-height" />
+
+                                    @{
+                                        Random random = new Random();
+                                        int discountPercentage = random.Next(1, 50);
+                                        decimal discountedPrice = bookRandom.Price + (bookRandom.Price * discountPercentage / 100M);
+                                    }
+
+                                    <RadzenRow class="mt-2 fixe-height" JustifyContent="JustifyContent.Start">
+                                        <RadzenColumn Size="8">
+                                            <RadzenText class="fixe-height" TextStyle="TextStyle.Subtitle1" TextAlign="TextAlign.Start" Style="color: #C92127; font-weight: bold;"> @string.Format("{0:N3}", bookRandom.Price) đ</RadzenText>
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="3" class="me-1">
+                                            @if (discountPercentage > 0)
+                                            {
+
+                                                <RadzenBadge class="fixe-height" BadgeStyle="BadgeStyle.Secondary" Text=@($"{discountPercentage:0}% off") Style="background-color:#C92127;" />
+
+                                            }
+                                        </RadzenColumn>
+
+
+                                    </RadzenRow>
+
+                                    <del>
+                                        <RadzenText TextStyle="TextStyle.Subtitle2" TextAlign="TextAlign.Start" Style=" color:#9999A3; font-weight: normal;"> @string.Format("{0:N3}", discountedPrice) đ</RadzenText>
+                                    </del>
+                                </div>
+                            </NavLink>
+
+                        </RadzenCard>
+                    </RadzenColumn>
+                }
+            }
+
+        </RadzenRow>
+ 
+
+
+      @*   <div class="d-flex justify-content-center mt-4">
+            <RadzenButton Text="Xem thêm" />
+        </div> *@
+
+    </RadzenCard>
+
+
+
+    <RadzenHeading Size="H2" Text="Danh mục sản phẩm" />
+    <RadzenCard>
+
+        <RadzenRow class="mt-3">
+            <RadzenColumn Width="50%">
+                <RadzenCard>
+                    
+                    <RadzenRow>
+                          <div style="transition: transform 0.2s;" class="NavLink-hover">
+                        <RadzenColumn Width="50%">
+                            <RadzenImage Path="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1518599327i/38542943.jpg" Style="width: 250px; height: 350px;" class="mb-3" />
+                        </RadzenColumn>
+                        </div>
+                        <RadzenColumn Width="50%">
+                            <RadzenHeading Size="H3" Text=" FOREIGN BOOKS" />
+                            <p>Embark on a journey of freedom and adventure within the pages of our books, where extraordinary stories from foreign cultures unfold, revealing new worlds, profound thoughts, and connecting humanity through exquisite prose. Immerse yourself in the joy of reading, where you can explore unique literary narratives and discover the diverse beauty of world cultures.</p>
+
+                            <div class="d-flex justify-content-center mt-4">
+                                <RadzenButton Text="Khám Phá" />
+                            </div>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    
+                </RadzenCard>
+            </RadzenColumn>
+            <RadzenColumn Width="50%">
+                <RadzenCard>
+                    <RadzenRow>
+                        <div style="transition: transform 0.2s;" class="NavLink-hover">
+                        <RadzenColumn Width="50%">
+                            <RadzenImage Path=" https://www.nxbtre.com.vn/Images/Book/NXBTreStoryFull_03462015_104616.jpg" Style="width: 250px; height: 350px;" class="mb-3" />
+                        </RadzenColumn>
+                        </div>
+                        <RadzenColumn Width="50%">
+                            <RadzenHeading Size="H3" Text="SÁCH VIỆT NAM" />
+                            <p>Khám phá vẻ đẹp tinh tế của văn hóa Việt Nam thông qua những trang sách tại mục 'Sách Việt Nam' trên trang web của chúng tôi. Những tác phẩm nổi tiếng và những câu chuyện gần gũi sẽ đưa bạn đến những hành trình khám phá về đất nước, con người và lịch sử qua bút văn tài năng của các tác giả nổi tiếng. </p>
+
+                            <div class="d-flex justify-content-center mt-4">
+                                <RadzenButton Text="Khám Phá"  />
+                            </div>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenCard>
+
+            </RadzenColumn>
+
+        </RadzenRow>
+
+
+    </RadzenCard>
+
+
+
+
+    <RadzenCard class="mb-5 mt-5">
+
+        <RadzenCard class="shadow-none" style="max-height: 300px; overflow-y: auto;">
+            <RadzenRow>
+                @foreach (var subCategory in RandomsubCategoryDtos)
+                {
+                    var id = subCategory.SubCategoryId;
+                    <NavLink @onclick="(() => NavigateToBooks(subCategory.SubCategoryId))" class="nav-link">
+                        <span class="m-1" style="font-weight: bold; color: #C92127;">@subCategory.SubCategoryName </span>
+                    </NavLink>
+
+
+                }
+                <RadzenColumn Width="100%">
+
+                   
+                    <RadzenRow JustifyContent="JustifyContent.End">
+
+                        <RadzenLink Icon="bolt" Text="Xem tất cả" class="m-2" Path="/allbook" style="font-weight: bold; color: #C92127;"/>
+                           
+
+                    </RadzenRow>
+                </RadzenColumn>
+            </RadzenRow>
+            <hr />
+        </RadzenCard>
+
+
+        <RadzenRow class="mt-0">
+
+            <RadzenDataList WrapItems="true" AllowPaging="true" PageSize=20 Data="@_books" TItem="BookDto">
+                <Template Context="book">
+
+                    <RadzenCard Style="flex: 1;  max-width: 300px;">
+                        <NavLink  @onclick="(() => NavigateToDetailPage(book.BookId))" style="text-decoration: none; color: inherit; display: contents;">
+                            <div style="transition: transform 0.2s;" class="NavLink-hover">
+
+                                <RadzenStack AlignItems="AlignItems.Start" Gap="0.5rem">
+                                    <RadzenRow class="mt-2 mb-3" JustifyContent="JustifyContent.Center">
+                                        <RadzenImage Path="@book.PathImage" Style="width: 250px; height: 230px; object-fit: cover; border-radius: 0;" AlternateText="@book.Title" />
+                                    </RadzenRow>
+                                 
+
+
+                                        <RadzenHeading Size="H5" Text="@book.Title" class="fixed-height" Style="max-width:300px" />
+                                            @{
+                                                Random random = new Random();
+                                                int discountPercentage = random.Next(1, 50);
+                                                decimal discountedPrice = book.Price + (book.Price * discountPercentage / 100.0M);
+                                            }
+
+                                        <RadzenRow class=" fixe-height" JustifyContent="JustifyContent.Start">
+                                            <RadzenColumn Size="8">
+                                                <RadzenText class="fixe-height" TextStyle="TextStyle.Subtitle1" TextAlign="TextAlign.Start" Style="color: #C92127; font-weight: bold;"> @string.Format("{0:N3}", book.Price) đ</RadzenText>
+                                            </RadzenColumn>
+                                            <RadzenColumn Size="3" class="me-1">
+                                                @if (discountPercentage > 0)
+                                                {
+
+                                                    <RadzenBadge class="fixe-height" BadgeStyle="BadgeStyle.Secondary" Text=@($"{discountPercentage:0}% off") Style="background-color:#C92127;" />
+
+                                                }
+                                            </RadzenColumn>
+
+
+                                        </RadzenRow>
+
+                                        <del>
+                                            <RadzenText TextStyle="TextStyle.Subtitle2" TextAlign="TextAlign.Start" Style=" color:#9999A3; font-weight: normal;"> @string.Format("{0:N3}", discountedPrice) đ</RadzenText>
+                                        </del>
+
+
+                              
+                                </RadzenStack>
+                            </div>
+                        </NavLink>
+                    </RadzenCard>
+
+
+                </Template>
+            </RadzenDataList>
+        </RadzenRow>
+
+    </RadzenCard>
+
+    <RadzenCard class="shadow-none mb-5" Style="display: flex; justify-content: center; align-items: center; ">
+        <RadzenRow Width="100%">
+
+
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/Thang-06-2022/cambridge.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/cengage.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+            </RadzenColumn>
+
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/Harper-Collins.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/hachette.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/macmilan.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/Thang-03-2022/oxford-02.jpg" Style="width: 100px; height: 100px;" class="mb-1" />
+
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/Scholastic-bar-logo.png" Style="width: 100px; height: 100px;" class="mb-1 card-image" />
+
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/penguin.jpg" Style="width: 100px; height: 100px;" class="mb-1 card-image" />
+
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/sterling.jpg" Style="width: 100px; height: 100px;" class="mb-1 card-image" />
+
+
+            </RadzenColumn>
+            <RadzenColumn Width="15%">
+
+                <RadzenImage Path="https://cdn0.fahasa.com/media/wysiwyg/NXB/logo-nxb/logo-home-page/PearsonLogo_Avatar.png" Style="width: 100px; height: 100px;" class="mb-1 card-image" />
+
+
+            </RadzenColumn>
+
+
+        </RadzenRow>
+    </RadzenCard>
+
+    <Footer/>
+
+</RadzenContentContainer>
+
+
+
+
+
+
+

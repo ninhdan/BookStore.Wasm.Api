@@ -1,0 +1,71 @@
+﻿@page "/admin/subcategory"
+@inherits SubCategoryBase
+@using BookStoreView.Models.Dtos;
+@layout LayoutAdmin
+
+
+
+<div class="rz-m-0">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/admin" Text="Admin" />
+                <RadzenBreadCrumbItem Path="/manage" Text="Manage"/>
+                <RadzenBreadCrumbItem Path="/subcategory" Text="Sub Category" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+@if (_subCategories == null && ErrorMessage == null)
+{
+    <Loading></Loading>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+     <div class="d-flex justify-content-end m-lg-2">
+        <RadzenButton Click=@ShowConfirmationAddModal Icon="add" ButtonStyle="ButtonStyle.Success" class="m-lg-1 rz-border-radius-3" hidden="@IsAnySubCategorySelected" />
+
+    @if (IsAnySubCategorySelected)
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-3" hidden="@(!IsSingleSubCategorySelected)" /> 
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-3" />
+        }
+        else
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-3" hidden /> 
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-3" hidden />
+        } 
+
+    </div> 
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Simple"
+                    AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@_subCategories" TItem="SubCategoryDto" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" class="rz-border-radius-3">
+
+
+        <Columns>
+            <RadzenDataGridColumn TItem="SubCategoryDto" Title="Select All" Width="50px" TextAlign="TextAlign.Center" Filterable="false">
+                <HeaderTemplate>
+
+                    <RadzenCheckBox TValue="bool" @bind-Value="@selectAll" Change="@(args => SelectAll((bool)args))" />
+
+                </HeaderTemplate>
+                <Template Context="data">
+                    <RadzenCheckBox @bind-Value="data.IsSelected" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="SubCategoryDto" Property="SubCategoryId" Title="SubCategory Id"  Filterable="false" Sortable="false" Width="200px" TextAlign="TextAlign.JustifyAll" />
+            <RadzenDataGridColumn TItem="SubCategoryDto" Property="SubCategoryName" Title="SubCategory Name" Filterable="true" Sortable="false" Width="150px" TextAlign="TextAlign.Start" />
+            <RadzenDataGridColumn TItem="SubCategoryDto" Property="CategoryName" Title="Category" Filterable="true" Sortable="false" Width="150px" TextAlign="TextAlign.Start" />
+        </Columns>
+
+    </RadzenDataGrid>
+}
+

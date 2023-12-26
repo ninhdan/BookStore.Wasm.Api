@@ -1,0 +1,72 @@
+﻿@page "/admin/layout"
+@inherits LayoutBase
+@using BookStoreBlazorWasm.Components
+@using BookStoreView.Models.Dtos;
+@layout LayoutAdmin
+
+
+<div class="rz-m-0">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/admin" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/admin/layout" Text="Layout" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+
+
+@if (_Layouts == null && ErrorMessage == null)
+{
+    <Loading></Loading>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+
+    <div class="d-flex justify-content-end m-lg-2">
+        <RadzenButton Click=@ShowConfirmationAddModal Icon="add" ButtonStyle="ButtonStyle.Success" class="m-lg-1 rz-border-radius-6" hidden="@IsAnyLayoutSelected" />
+
+        @if (IsAnyLayoutSelected)
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden="@(!IsSingleLayoutSelected)" />
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" />
+        }
+        else
+        {
+            <RadzenButton Click=@ShowEditModal Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden />
+            <RadzenButton Click=@DeleteSelected Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" hidden />
+        }
+
+    </div>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@_Layouts" TItem="LayoutDto" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" class="rz-border-radius-3">
+
+
+        <Columns>
+            <RadzenDataGridColumn TItem="LayoutDto" Title="Select All" Width="50px" TextAlign="TextAlign.Center" Filterable="false">
+                <HeaderTemplate>
+
+                    <RadzenCheckBox TValue="bool" @bind-Value="@selectAll" Change="@(args => SelectAll((bool)args))" />
+
+                </HeaderTemplate>
+                <Template Context="data">
+                    <RadzenCheckBox @bind-Value="data.IsSelected" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="LayoutDto" Property="LayoutId" Title="Layout Id" Filterable="false" Width="200px" TextAlign="TextAlign.JustifyAll" />
+            <RadzenDataGridColumn TItem="LayoutDto" Property="LayoutName" Title="Layout Name" Filterable="true" Sortable="true" Width="200px" TextAlign="TextAlign.Center" />
+        </Columns>
+
+
+    </RadzenDataGrid>
+}

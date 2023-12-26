@@ -1,0 +1,8 @@
+﻿<h3>RedirecToLogin</h3>
+@inject NavigationManager _navigation
+@code {
+    protected override void  OnInitialized()
+    {
+        _navigation.NavigateTo("/login");
+    }
+}

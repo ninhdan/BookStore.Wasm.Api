@@ -1,0 +1,85 @@
+﻿@page "/informatiton/address"
+@using BookStoreBlazorWasm.Pages.SellingBooks
+@using System.Security.Claims
+@layout LayoutBookDetail
+@inherits AddressBase
+
+
+
+
+
+<RadzenContentContainer>
+    <div class="mb-5">
+        <RadzenRow Width="100%">
+            <SideBarInformation />
+            <RadzenColumn Size="9">
+                <RadzenCard class="m-3 h-100">
+                    <EditForm Model="@newAddress" OnValidSubmit="CreateAddress">
+                        <RadzenText TextStyle="TextStyle.DisplayH6" class="mt-3 mb-3">Thông tin tài khoản</RadzenText>
+                        <RadzenRow Gap="1.5rem" Style="margin-left: 30px; margin-top: 10px">
+                            <RadzenColumn Size="12" SizeSM="5">
+                                <RadzenStack>
+                                    <RadzenFormField Text="Họ tên" Variant="@variant">
+                                        <RadzenTextBox Value="@($"{userInfo.fistName} {userInfo.lastName}")" Disabled/> 
+                                    </RadzenFormField>
+                                        
+                                    
+                                    <RadzenFormField Text="Số điện thoại" Variant="@variant">
+                                            <RadzenTextBox @bind-Value="@userInfo.Phone"  Disabled />
+                                     </RadzenFormField>
+                                    <RadzenFormField Text="Quốc gia" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@newAddress.Country"  Disabled  />
+                                    </RadzenFormField>
+                                 </RadzenStack>
+                             </RadzenColumn>
+                             <RadzenColumn Size="12" SizeSM="6">
+                                 <RadzenStack>
+
+                                     <RadzenFormField Text="Số nhà" Variant="@variant">
+                                         <RadzenTextBox @bind-Value="@newAddress.StreetNumber" Placeholder="Nhập nhà số nhà" />
+                                     </RadzenFormField>
+                                     <RadzenFormField Text="Phường / Xã" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@newAddress.Ward" Placeholder="Nhập phường" />
+                                     </RadzenFormField>
+                                     <RadzenFormField Text="Thành phố" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@newAddress.City" Placeholder="Nhập thành phố" />
+                                     </RadzenFormField>
+                                     <RadzenFormField Text="Tỉnh" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@newAddress.Province" Placeholder="Nhập tỉnh" />
+                                     </RadzenFormField>
+
+                                     <RadzenFormField style=" display: flex; align-items: center; justify-content: center;">
+                                         <button type="submit" class="btn btn-outline-danger" style="  display: flex; align-items: center; justify-content: center; width:200px ;">
+                                             <RadzenIcon Icon="save_alt"></RadzenIcon><span> <strong>&nbsp;Thêm địa chỉ mới</strong></span>
+                                         </button>
+                                     </RadzenFormField>
+                                 </RadzenStack>
+                             </RadzenColumn>
+
+                         </RadzenRow>
+                     </EditForm>
+                 </RadzenCard>
+
+             </RadzenColumn>
+
+
+
+
+         </RadzenRow>
+     </div>
+     <Footer />
+ </RadzenContentContainer>
+
+
+
+
+
+
+ @code {
+
+    Variant variant = Variant.Outlined;
+}
+
+
+
+

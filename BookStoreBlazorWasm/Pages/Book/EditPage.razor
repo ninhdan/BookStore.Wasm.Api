@@ -1,0 +1,224 @@
+﻿@* @page "/editpage/{BookId:guid}" *@
+
+@using BookStoreBlazorWasm.Services.Interfaces
+@using BookStoreView.Models.Dtos
+@inject IBookService _bookService
+@inject NavigationManager _navigationManager
+@inherits BookBase
+
+<CascadingBlazoredModal Size="ModalSize.ExtraLarge">
+    <EditForm Model="@BookToEdit" >
+        <DataAnnotationsValidator />
+        <RadzenRow Gap="1rem">
+            <RadzenColumn Size="12" SizeSM="12">
+                <RadzenStack>
+                    <RadzenFormField Text="Titile" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.Title" />
+                        <ValidationMessage For="@(() => BookToEdit.Title)" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Price" Variant="@variant">
+                        <RadzenNumeric @bind-Value="@BookToEdit.Price" />
+                        <ValidationMessage For="@(() => BookToEdit.Price)" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Publisher" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.Author" />
+                        <ValidationMessage For="@(() => BookToEdit.Author)" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Publisher" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.Publisher" />
+                        <ValidationMessage For="@(() => BookToEdit.Publisher)" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Publisher Year" Variant="@variant">
+                        <RadzenDatePicker @bind-Value=@BookToEdit.PublisherYear ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" />
+                        <ValidationMessage For="@(() => BookToEdit.PublisherYear)" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Size" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.Size" />
+                        <ValidationMessage For="@(() => BookToEdit.Size)" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Weight" Variant="@variant">
+                        <RadzenNumeric @bind-Value="@BookToEdit.Weight" />
+                        <ValidationMessage For="@(() => BookToEdit.Weight)" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="QuanlityPage" Variant="@variant">
+                        <RadzenNumeric @bind-Value="@BookToEdit.QuanlityPage" />
+                        <ValidationMessage For="@(() => BookToEdit.QuanlityPage)" />
+                    </RadzenFormField>
+                </RadzenStack>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeSM="12">
+                <RadzenStack>
+                    <RadzenFormField Text="Translator" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.Translator" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Supplier" Variant="@variant">
+                        <RadzenDropDownDataGrid Data=@_suppliers @bind-Value="@BookToEdit.SupplierId" TextProperty="SupplierName" ValueProperty="SupplierId" Change="HandleSupplierChange"  />
+                        <ValidationMessage For="@(() => BookToEdit.SubcategoryId)" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="SubCategory" Variant="@variant">
+                        <RadzenDropDownDataGrid Data="@_subCategory"
+                                                @bind-Value="@BookToEdit.SubcategoryId"
+                                                TextProperty="SubCategoryName"
+                                                ValueProperty="SubCategoryId"  Change="HandleSubCategoryChange"/>
+                        <ValidationMessage For="@(() => BookToEdit.SubcategoryId)"  />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Layout" Variant="@variant">
+                        <RadzenDropDown Data=@_layouts @bind-Value="@BookToEdit.LayoutId" TextProperty="LayoutName" ValueProperty="LayoutId" Change="HandleLayoutChange"  />
+                        <ValidationMessage For="@(() => BookToEdit.LayoutId)" />
+                    </RadzenFormField>
+
+
+                    <RadzenFormField Text="PriceRange" Variant="@variant">
+                        <RadzenDropDown Data=@_priceRanges @bind-Value="@BookToEdit.PriceRangeId" ValueProperty="PriceRangeId" TextProperty="PriceRangeName" Change="HandlePriceRangeChange"  />
+                        <ValidationMessage For="@(() => BookToEdit.PriceRangeId)" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Language" Variant="@variant">
+                        <RadzenDropDownDataGrid Data=@_languages @bind-Value="@BookToEdit.LanguageId" TextProperty="LanguageName" ValueProperty="LanguageId" Change="HandleLanguageChange"  />
+                        <ValidationMessage For="@(() => BookToEdit.LanguageId)" />
+
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Description" Variant="@variant">
+                        <RadzenTextArea @bind-Value="@BookToEdit.Description" />
+                    </RadzenFormField>
+
+                    <RadzenFormField Text="Image" Variant="@variant">
+                        <RadzenTextBox @bind-Value="@BookToEdit.PathImage" />
+                    </RadzenFormField>
+
+
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Cancel">Close</button>
+            <button type="submit" class="btn btn-primary" @onclick="UpdateBook" >Save changes</button>
+        </RadzenStack>
+    </EditForm>
+</CascadingBlazoredModal>
+
+
+@code{
+
+    Variant variant = Variant.Outlined;
+
+    private IEnumerable<SubCategoryDto> _subCategory = new List<SubCategoryDto>();
+    private IEnumerable<SupplierDto> _suppliers = new List<SupplierDto>();
+    private IEnumerable<PriceRangeDto> _priceRanges = new List<PriceRangeDto>();
+    private IEnumerable<LayoutDto> _layouts = new List<LayoutDto>();
+    private IEnumerable<LanguageDto> _languages = new List<LanguageDto>();
+
+    [Inject] private ISubCategoryService subCategoryService { get; set; }
+    [Inject] private ISupplierService supplierService { get; set; }
+    [Inject] private IPriceRangeService priceRangeService { get; set; }
+    [Inject] private ILayoutService layoutService { get; set; }
+    [Inject] private ILanguageService languageService { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+
+        _subCategory = await subCategoryService.GetAllSubCategory();
+        _suppliers = await supplierService.GetAllSupplier();
+        _priceRanges = await priceRangeService.GetPriceRanges();
+        _layouts = await layoutService.GetLayouts();
+        _languages = await languageService.GetLanguages();
+
+    }
+
+
+    private void HandleSubCategoryChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedSubCategoryId = (Guid)value;
+
+            var selectedSubCategory = _subCategory.FirstOrDefault(c => c.SubCategoryId == selectedSubCategoryId);
+
+            if (selectedSubCategory != null)
+            {
+
+                BookToEdit.SubcategoryId = selectedSubCategoryId;
+                BookToEdit.SubcategoryName = selectedSubCategory.SubCategoryName;
+
+
+            }
+
+        }
+    }
+
+
+    private void HandleSupplierChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedSupplierId = (Guid)value;
+            var selectedSupplier = _suppliers.FirstOrDefault(c => c.SupplierId == selectedSupplierId);
+            if (selectedSupplier != null)
+            {
+                BookToEdit.SupplierId = selectedSupplierId;
+                BookToEdit.SupplierName = selectedSupplier.SupplierName;
+            }
+        }
+    }
+
+    private void HandlePriceRangeChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedPriceRangeId = (Guid)value;
+            var selectedPriceRange = _priceRanges.FirstOrDefault(c => c.PriceRangeId == selectedPriceRangeId);
+
+            if (selectedPriceRange != null)
+            {
+
+                BookToEdit.PriceRangeId = selectedPriceRangeId;
+                BookToEdit.PriceRangeName = selectedPriceRange.PriceRangeName;
+            }
+
+        }
+    }
+
+    private void HandleLayoutChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedLayoutId = (Guid)value;
+            var selectedLayout = _layouts.FirstOrDefault(c => c.LayoutId == selectedLayoutId);
+
+            if (selectedLayout != null)
+            {
+
+                BookToEdit.LayoutId = selectedLayoutId;
+                BookToEdit.LayoutName = selectedLayout.LayoutName;
+            }
+
+        }
+    }
+
+    private void HandleLanguageChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedLanguageId = (Guid)value;
+            var selectedLanguage = _languages.FirstOrDefault(c => c.LanguageId == selectedLanguageId);
+
+            if (selectedLanguage != null)
+            {
+                BookToEdit.LanguageId = selectedLanguageId;
+                BookToEdit.LanguageName = selectedLanguage.LanguageName;
+            }
+        }
+
+    }
+
+
+
+  
+}

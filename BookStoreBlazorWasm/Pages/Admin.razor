@@ -1,0 +1,31 @@
+﻿@page "/admin"
+@layout LayoutAdmin
+@using Microsoft.AspNetCore.Authorization;
+@using System.Security.Claims
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Admin</PageTitle>
+
+<h1>Hello, world!</h1>
+
+
+
+@code {
+	private ClaimsPrincipal User;
+
+	[CascadingParameter]
+	public Task<AuthenticationState> authState { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var user = (await authState).User;
+		if (user.Identity.IsAuthenticated && !user.IsInRole("Admin"))
+		{
+			NavigationManager.NavigateTo("/login");
+		}
+		base.OnInitializedAsync();
+	}
+}
+
+

@@ -1,0 +1,117 @@
+﻿
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<style>
+   
+    .container {
+        height: 100vh;
+    }
+
+    .custom-banner-1,
+    .custom-banner-2 {
+        background-color: #3498db;
+        color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .custom-banner-1 {
+        height: 270px;
+    }
+
+    .custom-banner-2 {
+        height: 200px;
+    }
+
+    .banner-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+
+    }
+</style>
+
+
+
+
+<div class="mb-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="custom-banner-1 ">
+                <img src="@currentImageUrl" alt="Banner Trên" class="banner-image">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="custom-banner-1">
+                <img src="https://img.freepik.com/free-vector/online-library-service-cartoon-landing-web-banner_107791-14514.jpg?w=996&t=st=1702353628~exp=1702354228~hmac=ba991da6c5f3850abfd2488eaf41a810c62403108eed04446de94a6bb7f95c83" alt="Banner Phụ" class="banner-image">
+            </div>
+             
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="custom-banner-2 ">
+                <img src="https://img.freepik.com/free-photo/text-back-school-with-blurred-background_1134-8.jpg?w=996&t=st=1702353408~exp=1702354008~hmac=ef57999591f2cb666d41c3adccb3873c64eb19980dfe36c434c1297d45d5857d" alt="Banner Dưới" class="banner-image">
+              
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class=" custom-banner-2 ">
+                <img src="https://img.freepik.com/free-photo/authentic-book-club-scene_23-2150104597.jpg?w=996&t=st=1702353949~exp=1702354549~hmac=10a76f2d7b98ac13073c13023d69f0a12a5df952e6a224228a4d96e40b58e552" alt="Banner Dưới" class="banner-image">
+               
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class=" custom-banner-2 ">
+                <img src="https://img.freepik.com/free-vector/flat-design-world-book-day-concept_23-2148473264.jpg?w=740&t=st=1702354053~exp=1702354653~hmac=f8d19df683cd9a3dd9eb331d22cb9974099f750c2e32f1065a2d4699ecc6e687" alt="Banner Dưới" class="banner-image">
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class=" custom-banner-2">
+                <img src="https://img.freepik.com/free-vector/flat-illustration-world-book-day-celebration_23-2150162049.jpg?w=740&t=st=1702353530~exp=1702354130~hmac=436aedb7a8482a1188132cedbe84933a34e968dd53d2f7d4b5b6fa656bc8ac1a" alt="Banner Dưới" class="banner-image" style="object-position:center center">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code{
+
+    private string[] imageUrls = new string[]
+    {
+        "https://img.freepik.com/premium-vector/back-school-stationery-school-university-office-cartoon-school-supplies_497982-122.jpg?w=1380",
+        "https://static.vecteezy.com/system/resources/previews/002/294/884/original/book-delivery-web-banner-design-online-bookstore-concept-online-education-online-store-online-shopping-header-or-footer-banner-free-vector.jpg",
+        "https://img.freepik.com/free-vector/webinar-template-world-book-day-celebration_23-2150172913.jpg?w=1060&t=st=1702358036~exp=1702358636~hmac=24ec56654ccf48ec030bd9ee12084b137f109d8688c814f3b1eeadbdf9694c18",
+        "https://img.freepik.com/free-vector/realistic-book-lovers-day-horizontal-background-with-composition-text-books-with-lamp-cup-vector-illustration_1284-77302.jpg",
+    };
+
+    private int currentImageIndex = 0;
+    private string currentImageUrl => imageUrls[currentImageIndex];
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Set up a timer to change the image every 5 seconds
+        var timer = new System.Timers.Timer(5000);
+        timer.Elapsed += (sender, e) => ChangeImage();
+        timer.Start();
+    }
+
+    private void ChangeImage()
+    {
+        // Change to the next image
+        currentImageIndex = (currentImageIndex + 1) % imageUrls.Length;
+        InvokeAsync(StateHasChanged);
+    }
+
+
+
+
+
+}

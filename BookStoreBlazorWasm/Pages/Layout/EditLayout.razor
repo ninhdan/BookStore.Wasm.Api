@@ -1,0 +1,26 @@
+﻿@inherits LayoutBase
+
+<CascadingBlazoredModal>
+   
+        <Modal Title="Edit Layout">
+            <ModalBody>
+                <EditForm Model="@LayoutToEdit" OnValidSubmit="UpdateLayout" >
+                    <DataAnnotationsValidator /> 
+                    <div class="mb-3">
+                        <label for="LayoutName" class="form-label">Layout Name</label>
+                        <InputText id="LayoutName" class="form-control" @bind-Value="@LayoutToEdit.LayoutName" />
+                        <ValidationMessage For="@(() => LayoutToEdit.LayoutName)" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                        <button type="submit" class="btn btn-primary" >Confirm Changes</button>
+                      
+                    </div>
+                </EditForm>
+            </ModalBody>
+        </Modal>
+    
+    
+
+</CascadingBlazoredModal>

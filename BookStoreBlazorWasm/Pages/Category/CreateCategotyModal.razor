@@ -1,0 +1,36 @@
+﻿@inherits CategoryBase
+
+    <Modal Title="Add New Category">
+        <EditForm Model="@newCategory" OnValidSubmit="@AddNewCategory">
+            <DataAnnotationsValidator />
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <InputText id="categoryName" @bind-Value="@newCategory.CategoryName" class="form-control" />
+                        <ValidationMessage For="@(() => newCategory.CategoryName)" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="productPortfolio" class="form-label">Product Portfolio</label>
+                        <br />
+                        <InputRadioGroup id="productPortfolio" @bind-Value="@newCategory.ProductPortfolio">
+                            <InputRadio Value="true" id="radioTrue" class="form-check-input"></InputRadio>
+                            <label for="radioTrue" class="form-label">Sách tiếng việt</label>
+                            <br />
+                            <InputRadio id="radioFalse" Value="false" class="form-check-input"></InputRadio>
+                            <label for="radioFalse" class="form-label">Foreign books</label>
+                        </InputRadioGroup>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="CloseModal" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </EditForm>
+    </Modal>
+
+

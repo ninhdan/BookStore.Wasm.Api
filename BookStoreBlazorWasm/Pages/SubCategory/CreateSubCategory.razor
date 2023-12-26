@@ -1,0 +1,66 @@
+﻿@using BookStoreBlazorWasm.Services.Interfaces
+@using BookStoreView.Models.Dtos
+@inherits SubCategoryBase
+
+<EditForm Model="@newSubCategory" OnValidSubmit="@AddNewSubCategory">
+    <DataAnnotationsValidator />
+
+    <div class="modal-body">
+        <div class="row mb-3">
+            <div class="col">
+                <label for="subCategoryName" class="form-label">SubCategory Name</label>
+                <InputText id="subCategoryName" @bind-Value="@newSubCategory.SubCategoryName" class="form-control" />
+                <ValidationMessage For="@(() => newSubCategory.SubCategoryName)" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+     
+                <RadzenLabel Text="Category" Component="DropDownVirtualization" Style="margin-bottom: 8px; vertical-align: middle;" />
+                <RadzenDropDown AllowClear="true" @bind-Value=newSubCategory.CategoryId AllowVirtualization="true" Name="DropDownVirtualization"
+                  Change="HandleCategoryChange" 
+                  AllowFiltering="true" Data=@categories TextProperty="CategoryName" ValueProperty="CategoryId"  Style="width: 100%; max-width: 450px;"  Placeholder="Choose Category ..."/>
+                
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</EditForm>
+
+
+@code{
+    private IEnumerable<CategoryDto> categories = new List<CategoryDto>();
+    [Inject] private ICategoryService CategoryService { get; set; }
+    //  private string selectedCategoryName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(CategoryService == null)
+        {
+            throw new InvalidOperationException("CategoryService is not initialized.");
+        }
+        categories = await CategoryService.GetAllCategory();
+    }
+
+    private void HandleCategoryChange(object value)
+    {
+        if (value != null)
+        {
+            Guid selectedCategoryId = (Guid)value;
+            var selectedCategory = categories.FirstOrDefault(c => c.CategoryId == selectedCategoryId);
+
+            if (selectedCategory != null)
+            {
+                // Set both CategoryId and CategoryName in newSubCategory
+                newSubCategory.CategoryId = selectedCategoryId;
+                newSubCategory.CategoryName = selectedCategory.CategoryName;
+            }
+        }
+    }
+
+
+}

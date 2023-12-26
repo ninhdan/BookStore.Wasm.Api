@@ -1,0 +1,86 @@
+﻿@using BookStoreView.Models.Dtos
+
+@inject NavigationManager navigationManager
+
+<style>
+    .custom-navlink{
+        text-decoration: none;
+        color :#7A7E7F;
+    }
+
+    .custom-navlink:hover{
+            color: #000000;
+    }
+
+
+</style>
+
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+    <RadzenAutoComplete FilterOperator="StringFilterOperator.Contains"
+                        FilterDelay="100"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        @bind-Value=@Title 
+                        Data=@_books
+                        TextProperty="Title"
+                        Style="margin-right: -40px; width: 500px; border-radius: 10px"
+                        Placeholder="Water7 tìm kiếm ..."
+                        InputAttributes="@(new Dictionary<string, object>(){ { "aria-label", "Title" }})">
+        <Template Context="book">
+                <div style="display: flex; align-items: center;">
+                <NavLink href=@($"/bookdetails/{book.BookId}") class="custom-navlink">
+                    <img src="@book.PathImage" alt="Book Image" style="width: 50px; height: 50px; border-radius: 0; margin-right: 10px;" />
+                
+                    @book.Title
+                </NavLink>
+                </div>
+        </Template>
+        
+    </RadzenAutoComplete>
+
+   
+
+
+    <RadzenButton Icon="search" Style="border-radius: 10px; box-shadow: none"  />
+</RadzenStack>
+
+
+
+@code{
+    string Title;
+
+    [Inject] private IToastService toastService { get; set; }
+    BookDto selectedBook;
+
+    [Inject] private IBookService bookService { get; set; }
+
+    private IEnumerable<BookDto> _books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _books = await bookService.GetBooks();
+    }
+
+    protected void NavigateToDetailPage(Guid bookId)
+    {
+        navigationManager.NavigateTo($"/bookdetails/{bookId}");
+    }
+
+    private void NavigateToDetailPage(object selectedBook)
+    {
+        // If a book is selected, navigate to details page
+        if (selectedBook != null && selectedBook is BookDto)
+        {
+            Guid bookId = ((BookDto)selectedBook).BookId;
+            navigationManager.NavigateTo($"/bookdetails/{bookId}");
+        }
+    }
+
+  
+
+}
+
+
+
+

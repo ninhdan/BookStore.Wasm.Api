@@ -1,0 +1,17 @@
+﻿    .loading-container {
+        display: flex;
+    }
+
+    .spinner-grow {
+        margin-right: 10px; /* Khoảng cách giữa các spinner */
+        animation: spin 1s linear infinite; /* Hiệu ứng quay */
+    }
+
+@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+      }
+}

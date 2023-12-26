@@ -1,0 +1,24 @@
+﻿@inherits PriceRangeBase
+
+        <BlazoredModalContent>
+            
+            <div class="modal-body">
+                <p>Are you sure you want to delete the following languages?</p>
+                <ul>
+                    @foreach (var languageName in SelectedLanguageNames)
+                    {
+                        <li>@languageName</li>
+                    }
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                <button class="btn btn-danger" @onclick="Delete">Delete</button>
+            </div>
+        </BlazoredModalContent>
+
+
+ @code{
+    [Parameter] public List<string> SelectedLanguageNames { get; set; }
+}
+ 

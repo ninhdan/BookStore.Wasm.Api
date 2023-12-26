@@ -1,0 +1,87 @@
+﻿@page "/informatiton/account"
+@using BookStoreBlazorWasm.Pages.SellingBooks
+@layout LayoutBookDetail
+@inherits InformationUserBase
+
+
+
+
+
+<RadzenContentContainer>
+   <div class="mb-5">
+
+        <RadzenRow Width="100%">
+           
+            <SideBarInformation/>
+            <RadzenColumn Size="9">
+                    <RadzenCard class="m-3" Style="height:400px">
+                        <EditForm Model="@UpdateUserDto" OnValidSubmit="HandleValidSubmit">
+                        <RadzenText TextStyle="TextStyle.DisplayH6" class="mt-3 mb-3">Thông tin tài khoản</RadzenText>
+                        <RadzenRow Gap="1.5rem" Style="margin-left: 30px; margin-top: 10px">
+                            <RadzenColumn Size="12" SizeSM="5">
+                                <RadzenStack>
+                                    <RadzenFormField Text="Họ" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@UpdateUserDto.Firstname" Placeholder="Nhập họ" Style="width: 300px" />
+                                    </RadzenFormField>
+                                    <RadzenFormField Text="Tên" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@UpdateUserDto.Lastname" Placeholder="Nhập tên" />
+                                    </RadzenFormField>
+                                    <RadzenFormField Text="Số điện thoại" Variant="@variant">
+                                        <RadzenTextBox @bind-Value="@UpdateUserDto.Phone" Placeholder="Nhập số điện thoại" Disabled />
+                                     </RadzenFormField>
+                                     <RadzenFormField Text="Email" Variant="@variant">
+                                         <RadzenTextBox @bind-Value="@UpdateUserDto.Email" Placeholder="Nhập Email" />
+                                     </RadzenFormField>
+                                 </RadzenStack>
+                             </RadzenColumn>
+                             <RadzenColumn Size="12" SizeSM="6">
+                                 <RadzenStack>
+                                     <div class="form-group">
+                                         <label>Giới tính</label><br/>
+                                         <InputRadioGroup @bind-Value="UpdateUserDto.Gender" class="form-check">
+                                             <div class="form-check form-check-inline">
+                                                 <InputRadio class="form-check-input" Value="true" />
+                                                 <label class="form-check-label" >Nam</label>
+                                             </div>
+                                             <div class="form-check form-check-inline">
+                                                 <InputRadio class="form-check-input" Value="false" />
+                                                 <label class="form-check-label">Nữ</label>
+                                             </div>
+                                             <div class="form-check form-check-inline">
+                                                 <InputRadio class="form-check-input" Value="@((bool?)null)" />
+                                                 <label class="form-check-label">Không xác định</label>
+                                             </div>
+                                         </InputRadioGroup>
+                                     </div>
+
+                                     <RadzenFormField Text="Ngày sinh" Variant="@variant">
+                                         <RadzenDatePicker @bind-Value="@UpdateUserDto.Birthday" />
+                                     </RadzenFormField>
+                                     <RadzenFormField style=" display: flex; align-items: center; justify-content: center;">
+                                         <button class="btn btn-outline-danger" style="  display: flex; align-items: center; justify-content: center; width:200px ;">
+                                             <RadzenIcon Icon="save_alt"></RadzenIcon><span> <strong>&nbsp;Lưu thông tin</strong></span>
+                                         </button>
+                                     </RadzenFormField>
+                                 </RadzenStack>
+                             </RadzenColumn>
+
+                         </RadzenRow>
+                 </EditForm>
+                     </RadzenCard>
+                
+             </RadzenColumn>
+         </RadzenRow>
+     </div>
+     <Footer />
+ </RadzenContentContainer>
+
+ @code {
+
+    Variant variant = Variant.Outlined;
+
+
+}
+
+
+
+

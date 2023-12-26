@@ -1,0 +1,31 @@
+﻿@inherits PriceRangeBase
+
+<CascadingBlazoredModal>
+    <Modal Title="Edit Language">
+        <ModalBody>
+            <EditForm Model="@priceRangeToEdit" OnValidSubmit="UpdatePriceRange">
+                <DataAnnotationsValidator />
+                <div class="mb-3">
+                    <label for="PriceRangeName" class="form-label">Price Range Name</label>
+                    <InputText id="PriceRangeName" class="form-control" @bind-Value="@priceRangeToEdit.PriceRangeName" />
+                    <ValidationMessage For="@(() => priceRangeToEdit.PriceRangeName)" />
+                </div>
+                <div class="mb-3">
+                    <label for="MaxPrice" class="form-label">Max Price</label>
+                    <InputNumber id="MaxPrice" class="form-control" @bind-Value="@priceRangeToEdit.MaxPrice" />
+                    <ValidationMessage For="@(() => priceRangeToEdit.MaxPrice)" />
+                </div>
+                <div class="mb-3">
+                    <label for="MinPrice" class="form-label">Min Price</label>
+                    <InputNumber id="MinPrice" class="form-control" @bind-Value="@priceRangeToEdit.MinPrice" />
+                    <ValidationMessage For="@(() => priceRangeToEdit.MinPrice)" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                    <button type="submit" class="btn btn-primary">Confirm Changes</button>
+                </div>
+            </EditForm>
+        </ModalBody>
+    </Modal>
+</CascadingBlazoredModal>

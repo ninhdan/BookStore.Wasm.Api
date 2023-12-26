@@ -1,0 +1,24 @@
+﻿@inherits SupplierBase
+
+    <Modal Title="Add New Supplier">
+        <EditForm Model="@newSupplier" OnValidSubmit="@AddNewSupplier">
+            <DataAnnotationsValidator />
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="supplierName" class="form-label">Supplier Name</label>
+                        <InputText id="supplierName" @bind-Value="@newSupplier.SupplierName" class="form-control" />
+                        <ValidationMessage For="@(() => newSupplier.SupplierName)" />
+                    </div>
+                </div>
+    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="CloseModal" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </EditForm>
+    </Modal>
+
+

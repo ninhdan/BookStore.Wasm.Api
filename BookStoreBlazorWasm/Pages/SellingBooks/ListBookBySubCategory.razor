@@ -1,0 +1,106 @@
+﻿@page "/books/{subCategoryId:guid}"
+@using BookStoreView.Models.Dtos.DtoProductPortfolio
+@layout LayoutBookDetail 
+@inject NavigationManager NavigationManager
+@inject IShoppingCartService _shoppingCartService
+
+
+
+<RadzenContentContainer>
+    <RadzenCard class="mt-2 mb-3">
+        @if (Books != null && Books.Any())
+        {
+            <RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@Books" TItem="BookDtopp">
+                <Template Context="book">
+                    <RadzenCard class="mb-5">
+                        <RadzenRow class="mt-3">
+                            <RadzenColumn Width="20%">
+                                <NavLink @onclick="(() => NavigateToDetailPage(book.BookId))" style="text-decoration: none; color: inherit; display: contents;">
+                                    <div style="transition: transform 0.2s;" class="NavLink-hover">
+
+                                        <RadzenRow class="mt-3" JustifyContent="JustifyContent.Center">
+                                            <RadzenImage Path="@book.PathImage" Style="width: 195px; height: 200px; ; object-fit: cover" class="mb-3" />
+                                        </RadzenRow>
+                                        <RadzenHeading Size="H5" Text="@book.Title" class="fixed-height" Style="max-width:195px" />
+
+                                        @{
+                                            Random random = new Random();
+                                            int discountPercentage = random.Next(1, 50);
+                                            decimal discountedPrice = book.Price + (book.Price * discountPercentage / 100.0M);
+                                        }
+
+                                        <RadzenRow class="mt-2 fix-height" JustifyContent="JustifyContent.Start">
+                                            <RadzenColumn Size="8">
+                                                <RadzenText class="fixe-height" TextStyle="TextStyle.Subtitle1" TextAlign="TextAlign.Start" Style="color: #C92127; font-weight: bold;"> @string.Format("{0:N3}", book.Price) đ</RadzenText>
+                                            </RadzenColumn>
+                                            <RadzenColumn Size="3" class="me-1">
+                                                @if (discountPercentage > 0)
+                                                {
+                                                    <RadzenBadge class="fixe-height" BadgeStyle="BadgeStyle.Secondary" Text=@($"{discountPercentage:0}% off") Style="background-color:#C92127;" />
+                                                }
+                                            </RadzenColumn>
+                                        </RadzenRow>
+
+                                        <del>
+                                            <RadzenText TextStyle="TextStyle.Subtitle2" TextAlign="TextAlign.Start" Style=" color:#9999A3; font-weight: normal;"> @string.Format("{0:N3}", discountedPrice) đ</RadzenText>
+                                        </del>
+                                    </div>
+                                </NavLink>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenCard>
+                </Template>
+            </RadzenDataList>
+        }
+        else
+        {
+            <div>No books available.</div>
+        }
+    </RadzenCard>
+    <Footer />
+</RadzenContentContainer>
+
+
+
+
+@code {
+
+    int Value;
+    [Parameter] public Guid SubCategoryId { get; set; }
+
+    private List<BookDtopp> Books = new List<BookDtopp>();
+
+    [Inject] AuthenticationStateProvider authenticationState { get; set; }
+    [Inject] private IProductPortfolioService BookProductPortfolioService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Books = await BookProductPortfolioService.GetBooksBySubCategory(SubCategoryId);
+        await  LoadingCartChange();
+    }
+
+    protected void NavigateToDetailPage(Guid bookId)
+    {
+        NavigationManager.NavigateTo($"/bookdetails/{bookId}");
+    }
+
+    private async Task<Guid?> GetUserIdAsync()
+    {
+        var authState = await authenticationState.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        return Guid.TryParse(user.FindFirst("sub")?.Value, out var userId) ? userId : (Guid?)null;
+    }
+
+
+    private async Task LoadingCartChange()
+    {
+        var userId = await GetUserIdAsync();
+        if (userId.HasValue)
+        {
+            var shoppingCartItems = await _shoppingCartService.GetItems(userId.Value);
+            var totalQty = shoppingCartItems.Sum(i => i.Quanlity);
+            _shoppingCartService.RaiseEventOnShoppingCartChanged(totalQty);
+        }
+    }
+}

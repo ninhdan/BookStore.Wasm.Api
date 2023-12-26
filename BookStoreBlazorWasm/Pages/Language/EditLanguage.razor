@@ -1,0 +1,26 @@
+﻿
+@inherits PriceRangeBase
+<CascadingBlazoredModal>
+        <Modal Title="Edit Language">
+            <ModalBody>
+                <EditForm Model="@LanguageToEdit" OnValidSubmit="UpdateLanguage" >
+                    <DataAnnotationsValidator /> 
+                    <div class="mb-3">
+                        <label for="LanguageCode" class="form-label">Language Code</label>
+                        <InputText id="LanguageCode" class="form-control" @bind-Value="@LanguageToEdit.LanguageCode" />
+                        <ValidationMessage For="@(() => LanguageToEdit.LanguageCode)" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="LanguageName" class="form-label">Language Name</label>
+                        <InputText id="LanguageName" class="form-control" @bind-Value="@LanguageToEdit.LanguageName" />
+                    <ValidationMessage For="@(() => LanguageToEdit.LanguageName)" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                        <button type="submit" class="btn btn-primary" >Confirm Changes</button>
+                    </div>
+                </EditForm>
+            </ModalBody>
+        </Modal>
+</CascadingBlazoredModal>

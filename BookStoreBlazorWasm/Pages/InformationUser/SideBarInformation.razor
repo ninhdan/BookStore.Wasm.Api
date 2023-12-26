@@ -1,0 +1,56 @@
+﻿@inject NavigationManager NavigationManager
+
+<RadzenColumn Size="3">
+    <RadzenCard>
+        <RadzenText TextStyle="TextStyle.DisplayH5" Style="color:#C92127" class="pb-1 pt-4"><strong>Tài Khoản</strong></RadzenText>
+        <hr />
+        <NavLink class="cus-navlink" @onclick="NavigationToInformationAccount">
+            <RadzenText TextStyle="TextStyle.Body2">  Thông tin tài khoản </RadzenText>
+        </NavLink>
+        <hr />
+        <NavLink class="cus-navlink" @onclick="NavigationToOrderList">
+            <RadzenText TextStyle="TextStyle.Body2">Đơn hàng của tôi</RadzenText>
+        </NavLink>
+        <hr />
+        <RadzenTree>
+            <RadzenTreeItem Text ="Địa chỉ">
+                <ChildContent>
+                    <NavLink class="cus-navlink" @onclick="NavigationToAddress">
+                        <RadzenTreeItem Text="Thêm địa chỉ" />
+                    </NavLink>
+                    <RadzenTreeItem Text="cập nhật địa chỉ" />
+                    <RadzenTreeItem Text="Sổ địa chỉ" />
+                </ChildContent>
+            </RadzenTreeItem>
+        </RadzenTree>
+
+        
+
+
+        
+        <hr />
+
+    </RadzenCard>
+</RadzenColumn>
+
+@code{
+
+    private void NavigationToInformationAccount()
+    {
+        NavigationManager.NavigateTo("/informatiton/account");
+    }
+
+    private void NavigationToAddress()
+    {
+        NavigationManager.NavigateTo("/informatiton/address");
+    }
+
+    private void NavigationToOrderList()
+    {
+        NavigationManager.NavigateTo("/informatiton/orders");
+    }
+
+}
+
+
+

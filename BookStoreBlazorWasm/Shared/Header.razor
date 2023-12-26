@@ -1,0 +1,195 @@
+﻿@using BookStoreView.Models.Dtos.DtoProductPortfolio
+@using System.Security.Claims
+
+@inject IProductPortfolioService ProductPortfolioService
+@inject IUserService UserService
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<style>
+    .custom-menubar {
+        background-color: #4340D2;
+    }
+</style>
+
+
+
+
+<RadzenHeader class="rz-background-color-white shadow-sm mt-1 rounded-3" >
+    <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" class="rz-border-radius-3 custom-menubar rz-background-color-primary ms-3" />
+            <RadzenStack >
+                <RadzenLink href="/">
+                    <RadzenImage Path="images/Logo/Logo-Remove.png" Style="width: 100px; height: 50px;" />
+                </RadzenLink>
+               
+            </RadzenStack>
+
+            <RadzenStack>
+                <RadzenIcon Icon="smartphone" IconColor="black" Style="font-size: 30px" />
+
+            </RadzenStack>
+            <RadzenStack >
+                <RadzenLabel class="text-black " Style="font-size: 10px; color:#7A7E7F; ">+84 345 678 200</RadzenLabel>
+                <RadzenLabel class="text-black" Style="font-size: 12px; color:#7A7E7F;"><strong>Liên hệ Water7</strong> </RadzenLabel>
+
+            </RadzenStack>
+
+        </RadzenStack>
+
+
+        <SearchBook/>
+
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0" JustifyContent="JustifyContent.SpaceBetween">
+
+            <RadzenStack>
+                <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" class="me-4">
+                    
+                    <CartMenu/>
+                    <RadzenLabel Style="font-size: 13px; color: #7A7E7F; ">Giỏ hàng</RadzenLabel>
+                    
+                </RadzenStack>
+            </RadzenStack>
+            <RadzenProfileMenu Style="background:white;">
+
+                <Template>
+                <AuthorizeView Roles="User">
+                   <Authorized>
+                        <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center">
+                        <RadzenIcon Icon="person" IconColor="#7A7E7F" Style="font-size: 20px;" />
+                                <RadzenLabel Style="font-size: 13px; color: #7A7E7F">@UserDisplayName(context.User.Claims.ToList())</RadzenLabel>
+                    </RadzenStack>
+                   </Authorized>
+                   <NotAuthorized>
+                        <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center">
+                        <RadzenIcon Icon="person" IconColor="#7A7E7F" Style="font-size: 20px;" />
+                        <RadzenLabel Style="font-size: 13px; color: #7A7E7F">Tài khoản</RadzenLabel>
+                    </RadzenStack>
+                   </NotAuthorized>
+
+                </AuthorizeView>
+                </Template>
+                    
+                <ChildContent>
+                 <AuthorizeView Roles="User">
+                    <Authorized>
+                                <NavLink @onclick="NavigationToInformation"><RadzenProfileMenuItem Text="Thành viên" Icon="account_box"></RadzenProfileMenuItem></NavLink>
+                                <RadzenProfileMenuItem Text="Đơn hàng" Path="buttons" Icon="account_balance_wallet"></RadzenProfileMenuItem>
+                                <NavLink @onclick="LogoutAsync"><RadzenProfileMenuItem Text="Đăng xuất" Icon="logout"/></NavLink>
+                            </Authorized>
+                    <NotAuthorized>
+                            <RadzenProfileMenuItem Text="Đăng nhập" Path="/login" Icon="login"></RadzenProfileMenuItem>
+                            <RadzenProfileMenuItem Text="Đăng ký" Path="/Register" Icon="app_registration"></RadzenProfileMenuItem>
+                    </NotAuthorized>
+                </AuthorizeView>
+                </ChildContent>
+             
+
+            </RadzenProfileMenu>
+
+            
+        </RadzenStack>
+    </RadzenRow>
+</RadzenHeader>
+
+<RadzenSidebar Responsive="false" @bind-Expanded="@sidebar1Expanded" style="position: absolute">
+    <RadzenPanelMenu>
+        <RadzenPanelMenuItem Icon="menu_book" Text="Tất Cả Sách" Style="font-weight:bold" Path="/allbook" />
+        <RadzenPanelMenuItem Icon="filter_1" Text="Sách trong nước" Click="@(() => LoadCategories(1))" Style="font-weight:bold" />
+
+        <RadzenPanelMenuItem Icon="filter_none" Text="Foreign books" Click="@(() => LoadCategories(0))" Style="font-weight:bold" />
+
+        @if (categories != null && categories.Any())
+        {
+            <RadzenPanelMenu>
+                @foreach (var category in categories)
+                {
+                    <RadzenPanelMenuItem Text="@category.CategoryName" Click="@(() => LoadSubCategories(category.CategoryId))">
+                        @if (category.SubCategories != null && category.SubCategories.Any())
+                        {
+                            <RadzenPanelMenu>
+                                @foreach (var subCategory in category.SubCategories)
+                                {
+                                    <RadzenPanelMenuItem Text="@subCategory.SubCategoryName" Click="@(() => NavigateToBooks(subCategory.SubCategoryId))" />
+                                }
+                            </RadzenPanelMenu>
+                        }
+                    </RadzenPanelMenuItem>
+                }
+            </RadzenPanelMenu>
+        }
+
+       
+    </RadzenPanelMenu>
+</RadzenSidebar>
+
+
+
+
+@code {
+    bool sidebar1Expanded = false;
+
+    private List<CategoryDtopp> categories = new List<CategoryDtopp>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCategories(0);
+    }
+
+    private async Task LoadCategories(int productPortfolio)
+    {
+        categories = await ProductPortfolioService.GetCategoriesByProductPortfolioAsync(productPortfolio == 1);
+    }
+
+    private async Task LoadSubCategories(Guid categoryId)
+    {
+        var selectedCategory = categories.FirstOrDefault(c => c.CategoryId == categoryId);
+
+        if (selectedCategory != null)
+        {
+            selectedCategory.SubCategories = await ProductPortfolioService.GetSubCategoriesByCategoryAsync(categoryId) ?? new List<SubCategoryDtopp>();
+        }
+    }
+
+    private void NavigateToBooks(Guid subCategoryId)
+    {
+        NavigationManager.NavigateTo($"/books/{subCategoryId}");
+    }
+
+    private void NavigationToInformation()
+    {
+        NavigationManager.NavigateTo("/informatiton/account");
+    }
+
+    //-----------------------------------------------------//
+    private string UserDisplayName(List<Claim> claims)
+    {
+        var firstName = claims.Where(_ => _.Type == "FirstName").Select(_ => _.Value).FirstOrDefault();
+        var lastName = claims.Where(_ => _.Type == "LastName").Select(_ => _.Value).FirstOrDefault();
+
+        if (!string.IsNullOrEmpty(firstName) || !string.IsNullOrEmpty(lastName))
+        {
+            return $"{lastName} {firstName}";
+        }
+        var phone = claims.Where(_ => _.Type == "Phone").Select(_ => _.Value).FirstOrDefault();
+        return phone;
+    }
+
+    private async Task LogoutAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var claims = user.Claims.ToList();
+
+        
+
+        await UserService.LogoutUserAsync(claims);
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+
+

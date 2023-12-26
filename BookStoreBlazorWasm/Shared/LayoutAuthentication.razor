@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+@using Blazored.Modal
+@using Microsoft.AspNetCore.Authorization
+@using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+
+@attribute [Authorize]
+
+
+<div class="main">
+    <div class="content px-4">
+        <div class="main-content">
+            @Body
+        </div>
+    </div>
+</div>
+
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="5"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorClass="error-toast-override"
+                ErrorIcon="fa fa-bug"
+                InfoClass="info-toast-override"
+                InfoIcon="fa fa-info-circle"
+                WarningClass="warning-toast-override"
+                WarningIcon="fa fa-exclamation-triangle" />

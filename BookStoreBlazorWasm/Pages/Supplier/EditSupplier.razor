@@ -1,0 +1,23 @@
+﻿
+@inherits SupplierBase
+<CascadingBlazoredModal>
+        <Modal Title="Edit Category">
+            <ModalBody>
+                <EditForm Model="@SupplierToEdit" OnValidSubmit="UpdateSupplier" >
+                    <DataAnnotationsValidator /> 
+                    <div class="mb-3">
+                        <label for="SupplierName" class="form-label">Supplier Name</label>
+                         <InputText id="SupplierName" class="form-control" @bind-Value="@SupplierToEdit.SupplierName" />
+                        <ValidationMessage For="@(() => SupplierToEdit.SupplierName)" />
+                    </div>
+                  
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+
+                        <button type="submit" class="btn btn-primary" >Confirm Changes</button>
+                      
+                    </div>
+                </EditForm>
+            </ModalBody>
+        </Modal>
+</CascadingBlazoredModal>

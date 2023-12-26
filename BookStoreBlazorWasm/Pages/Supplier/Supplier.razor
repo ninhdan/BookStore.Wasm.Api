@@ -1,0 +1,78 @@
+﻿@page "/admin/supplier"
+@inherits SupplierBase
+@using BookStoreView.Models.Dtos;
+@layout LayoutAdmin 
+
+
+
+<div class="rz-m-0">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumb>
+            <Template Context="item">
+                <RadzenBadge Text="@item.Text" IsPill="true" Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Info" />
+            </Template>
+            <ChildContent>
+                <RadzenBreadCrumbItem Path="/" Text="Manage" />
+                <RadzenBreadCrumbItem Path="/supplier" Text="Supplier" />
+            </ChildContent>
+        </RadzenBreadCrumb>
+    </RadzenBreadCrumb>
+</div>
+
+
+
+@if (_suppliers == null && ErrorMessage == null)
+{
+    <Loading></Loading>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+
+    <div  class="d-flex justify-content-end m-lg-2" >
+        <RadzenButton Click=@ShowConfirmationAddModal Icon="add"  ButtonStyle="ButtonStyle.Success" class="m-lg-1 rz-border-radius-6" hidden="@IsAnySupplierSelected" />
+
+        @if(IsAnySupplierSelected)
+        {
+            <RadzenButton Click=@ShowEditModal  Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden="@(!IsSingleSupplierSelected)" />
+            <RadzenButton Click=@DeleteSelected  Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" />
+        }
+        else
+        {
+            <RadzenButton Click=@ShowEditModal  Icon="edit" ButtonStyle="ButtonStyle.Warning" class="m-lg-1 rz-border-radius-6" hidden />
+            <RadzenButton Click=@DeleteSelected  Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" class="m-lg-1 rz-border-radius-6" hidden />
+        }
+
+    </div>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Simple"
+    AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@_suppliers" TItem="SupplierDto" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" class="rz-border-radius-3">
+       
+
+        <Columns>
+            <RadzenDataGridColumn TItem="SupplierDto" Title="Select All" Width="50px" TextAlign="TextAlign.Center" Filterable="false">
+                <HeaderTemplate>
+
+                    <RadzenCheckBox TValue="bool" @bind-Value="@selectAll" Change="@(args => SelectAll((bool)args))" />
+
+                </HeaderTemplate>
+                <Template Context="data">
+                    <RadzenCheckBox @bind-Value="data.IsSelected" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="SupplierDto" Property="SupplierId" Title="Supplier Id" Filterable="false" Width="200px" TextAlign="TextAlign.JustifyAll" />
+            <RadzenDataGridColumn TItem="SupplierDto" Property="SupplierName" Title="Supplier Name" Filterable="true" Sortable="true" Width="200px" TextAlign="TextAlign.Center" />
+            
+        </Columns>
+
+
+    </RadzenDataGrid>
+}
+   
+
+
+
+

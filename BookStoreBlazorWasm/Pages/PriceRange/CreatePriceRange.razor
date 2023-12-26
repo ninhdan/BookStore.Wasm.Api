@@ -1,0 +1,34 @@
+﻿
+@inherits PriceRangeBase
+<EditForm Model="@newPriceRange" OnValidSubmit="@AddNewPriceRange">
+    <DataAnnotationsValidator />
+
+    <div class="modal-body">
+        <div class="row mb-3">
+            <div class="col">
+                <label for="priceRangeName" class="form-label">Price Range Name</label>
+                <InputText id="priceRangeName" @bind-Value="@newPriceRange.PriceRangeName" class="form-control" />
+                <ValidationMessage For="@(() => newPriceRange.PriceRangeName)" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="maxPrice" class="form-label">Max Price</label>
+                <InputNumber id="maxPrice" @bind-Value="@newPriceRange.MaxPrice" class="form-control" />
+                <ValidationMessage For="@(() => newPriceRange.MaxPrice)" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="minPrice" class="form-label">Min Price</label>
+                <InputNumber id="minPrice" @bind-Value="@newPriceRange.MinPrice" class="form-control" />
+                <ValidationMessage For="@(() => newPriceRange.MinPrice)" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" @onclick="CloseModal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</EditForm>
+
