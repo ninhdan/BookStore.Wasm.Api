@@ -28,7 +28,7 @@ One interesting fact is that the project name, "Water7", is inspired by my fondn
 - Repository Pattern
 
 ### Backend
-- ASP.NET Core Web API (RESTful API)
+- ASP.NET Core Web API (RESTfull API)
 - Entity Framework Core 7
 - JSON Web Tokens (JWT)
 - AutoMapper
