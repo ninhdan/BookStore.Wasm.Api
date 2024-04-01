@@ -72,7 +72,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseCors(policy =>
-    policy.WithOrigins("https://localhost:7077", "https://localhost:7077")
+    //policy.WithOrigins("https://localhost:7077", "https://localhost:7077")
+    policy.WithOrigins("http://localhost:5024", "http://localhost:5024")
     .AllowAnyMethod()
     .WithHeaders(HeaderNames.ContentType)
 );
