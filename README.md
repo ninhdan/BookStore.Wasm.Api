@@ -34,6 +34,8 @@ One interesting fact is that the project name, "Water7", is inspired by my fondn
 - AutoMapper
 - Database-First Migrations
 - SwaggerUI
+  
+### Design Patterns
 - Dependency Injection
 - Repository Pattern
 
