@@ -7,8 +7,10 @@ Additionally, the color scheme of the website is predominantly ocean blue, refle
 
 
 ## 🚀 Installation
-1. Clone the repository: `git clone https://github.com/ninhdan/BlazorEcommercee.git`
-2. Navigate to the project directory: `cd BlazorEcommercee`
+1. Clone the repository: `git clone https://github.com/ninhdan/BookStore.Wasm.Api.git`
+2. Navigate to the project directory: `cd BookStore.Wasm.Api`
 3. Build the application: `dotnet build`
-4. Navigate to server directory: `cd Server`
+4. Navigate to server directory: `cd BookStoreApi`
 5. Run the application: `dotnet watch run`
+6. Navigate to client directory: `cd BookStoreBlazorWasm`
+7. Run the application: `dotnet watch run`
