@@ -30,7 +30,7 @@ One interesting fact is that the project name, "Water7", is inspired by my fondn
 ### Backend
 - ASP.NET Core Web API (RESTfull API)
 - Entity Framework Core 7
-- JSON Web Tokens (JWT)
+- JwtBearer 
 - AutoMapper
 - Database-First Migrations
 - SwaggerUI
