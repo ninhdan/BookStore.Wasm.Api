@@ -14,8 +14,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7088") });
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5182") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7088") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5182") });
 
 
 builder.Services.AddBlazoredModal();
