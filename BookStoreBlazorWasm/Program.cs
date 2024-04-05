@@ -18,6 +18,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5182") });
 
 
+
+
 builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredToast();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
