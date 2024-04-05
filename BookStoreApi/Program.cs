@@ -64,7 +64,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors( options =>
 {
-    options.AddDefaultPolicy(
+    options.AddPolicy("AllowSpecificOrigins",
         policy =>
         {
             policy.WithOrigins("https://ambitious-meadow-0d2843f0f.5.azurestaticapps.net", "https://localhost:7077")
@@ -88,8 +88,7 @@ if (app.Environment.IsDevelopment())
 
 
 
-
-app.UseCors();
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 
