@@ -1,6 +1,7 @@
 ﻿@using BookStoreBlazorWasm.Services.Interfaces
 @using BookStoreView.Models.Dtos
 @inherits SubCategoryBase
+@attribute [Authorize("Admin")]
 
 <EditForm Model="@newSubCategory" OnValidSubmit="@AddNewSubCategory">
     <DataAnnotationsValidator />

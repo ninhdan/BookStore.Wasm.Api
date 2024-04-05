@@ -5,6 +5,7 @@
 @inject IBookService _bookService
 @inject NavigationManager _navigationManager
 @inherits BookBase
+@attribute [Authorize("Admin")]
 
 <CascadingBlazoredModal Size="ModalSize.ExtraLarge">
     <EditForm Model="@BookToEdit" >

@@ -22,11 +22,11 @@ namespace BookStoreView.Models.Dtos.DtoUser
 
         public string Phone { get; set; } 
 
-        public string Password { get; set; } 
+        public string Password { get; set; }
 
-        public bool Accountstatus { get; set; }
+        public bool Accountstatus { get; set; } 
 
-        public string Role { get; set; }
+        public string Role { get; set; } 
         public List<AddressDto> Addresses { get; set; }
     }
 }

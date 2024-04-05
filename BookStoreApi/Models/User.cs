@@ -21,9 +21,9 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
-    public bool Accountstatus { get; set; }
+    public bool Accountstatus { get; set; } = true;
 
-    public string Role { get; set; } = null!;
+    public string Role { get; set; } = "User";
 
     public virtual ICollection<Address> Addresses { get; } = new List<Address>();
 

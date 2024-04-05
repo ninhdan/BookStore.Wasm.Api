@@ -1,6 +1,7 @@
 ﻿@page "/admin/user"
 @using BookStoreView.Models.Dtos.DtoUser
 @layout LayoutAdmin
+@attribute [Authorize("Admin")]
 
 @inherits UsersBase
 

@@ -2,16 +2,25 @@
     <CascadingBlazoredModal HideCloseButton="false" DisableBackgroundCancel="true">
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData">
-                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                 <NotAuthorized>
-                    @if (context.User.Identity?.IsAuthenticated != true)
-                    {
-                       <RedirectToLogin/>
-                    }
-                    
-                 </NotAuthorized>
- 
-                 </AuthorizeRouteView>
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <NotAuthorized>
+                        @{
+                            try
+                            {
+                                if (context.User.Identity?.IsAuthenticated != true)
+                                {
+                                    <RedirectToLogin />
+                                }
+                            }
+                            catch (InvalidOperationException ex)
+                            {
+                                <p>An error occurred: @ex.Message</p>
+                                <!-- You can provide additional instructions or suggestions here -->
+                            }
+                        }
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+
                 <FocusOnNavigate RouteData="@routeData" Selector="h1" />
             </Found>
             <NotFound>

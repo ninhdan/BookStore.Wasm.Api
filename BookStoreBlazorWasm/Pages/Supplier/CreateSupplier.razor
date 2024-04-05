@@ -1,4 +1,5 @@
-﻿@inherits SupplierBase
+﻿@attribute [Authorize("Admin")]
+@inherits SupplierBase
 
     <Modal Title="Add New Supplier">
         <EditForm Model="@newSupplier" OnValidSubmit="@AddNewSupplier">

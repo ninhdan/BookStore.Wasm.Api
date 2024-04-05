@@ -1,4 +1,5 @@
 ﻿@inherits CategoryBase
+@attribute [Authorize("Admin")]
 
     <Modal Title="Add New Category">
         <EditForm Model="@newCategory" OnValidSubmit="@AddNewCategory">

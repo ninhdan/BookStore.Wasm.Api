@@ -70,9 +70,7 @@ builder.Services.AddCors( options =>
             policy.WithOrigins("https://ambitious-meadow-0d2843f0f.5.azurestaticapps.net", "https://localhost:7077")
            //policy.WithOrigins("http://localhost:5024", "http://localhost:5024")
            .AllowAnyMethod()
-           //.WithHeaders(HeaderNames.ContentType);
-           .WithHeaders();
-
+           .WithHeaders(HeaderNames.ContentType);
         });
 
 });
@@ -86,8 +84,6 @@ if (app.Environment.IsDevelopment())
    app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
 
 
 
